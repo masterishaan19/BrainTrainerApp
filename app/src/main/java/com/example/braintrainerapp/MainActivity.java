@@ -23,13 +23,27 @@ public class MainActivity extends AppCompatActivity {
     int a, b, total = 0, correct = 0;
     int maxRange = 25;
     int TimeForPlay = 30;
-    ConstraintLayout gamerId, playAgainId;
+    ConstraintLayout gamerId, playAgainId, difficultView;
+    public void difficulty(View view){
+        int val = Integer.valueOf(view.getTag().toString());
+        if(val == 0)
+            maxRange = 25;
+        else if(val == 1)
+            maxRange = 100;
+        else if(val == 2)
+            maxRange = 500;
+        else
+            maxRange = 1000;
+        difficultView.setVisibility(View.INVISIBLE);
+        gamerId.setVisibility(View.VISIBLE);
+        PlayAgain(view);
+    }
 //    The function that handle when the game is being started..
     public void startGame(View view){
+        difficultView.setVisibility(View.VISIBLE);
         startGame.setVisibility(View.INVISIBLE);
-        gamerId.setVisibility(View.VISIBLE);
         playAgainId.setVisibility(View.INVISIBLE);
-        PlayAgain(view);
+//        difficulty(view);
     }
 //    This function allows user to quit at the moment
     public void quitnow(View view){
@@ -37,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
         System.exit(0);
     }
 //    This is the part that control main functioning of the app
+    public void playAgain(View view){
+        difficultView.setVisibility(View.VISIBLE);
+        playAgainId.setVisibility(View.INVISIBLE);
+    }
     public void PlayAgain(View view){
         correct = 0;
         total = 0;
@@ -45,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         response.setText("");
         playAgainId.setVisibility(View.INVISIBLE);
         gamerId.setVisibility(View.VISIBLE);
+        setQuestion();
         new CountDownTimer(TimeForPlay*1000+10, 1000) {
             @Override
             public void onTick(long l) {
@@ -118,10 +137,12 @@ public class MainActivity extends AppCompatActivity {
         playAgainId = findViewById(R.id.playId);
         gamerId = findViewById(R.id.gamerid);
         scoreDisplay = findViewById(R.id.scoreDisplay);
-        setQuestion();
+        difficultView = findViewById(R.id.difficultyView);
+
         //Adding the condition to the app
         startGame.setVisibility(View.VISIBLE);
         playAgainId.setVisibility(View.INVISIBLE);
+        difficultView.setVisibility(View.INVISIBLE);
         gamerId.setVisibility(View.INVISIBLE);
         // My creativity ends here
     }
